@@ -3,15 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 
-Route::resource('contacts', ContactController::class);
+Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-| Here is where you can register web routes for your application...
-*/
+Route::middleware('auth')->group(function () {
+    Route::resource('contacts', ContactController::class)->except(['index']);
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/dashboard', function () {
+    return redirect('/contacts');
+})->name('dashboard');
+
+
+
+
 });
